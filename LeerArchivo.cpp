@@ -11,7 +11,7 @@ using namespace std;
 
 vector<string> separar(string linea);
 
-int main(){
+int LeerArchivo(){
     ifstream entrada;
     entrada.open("DatosPeliculas.csv");
 
@@ -22,7 +22,7 @@ int main(){
         vector<string> datos = separar(linea);
     if(datos.size() == 6){
         cout << "pelicula";
-        new pelicula(datos);
+        //new pelicula(datos);
     }else{
         cout << "episodio";
     }
