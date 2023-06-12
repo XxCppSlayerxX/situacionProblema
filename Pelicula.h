@@ -9,8 +9,13 @@
 #define PELICULA_H
 
 class Pelicula: public Video{    
-    public:
+    private:
+    vector<string> datosP;
 
+    public:
+    Pelicula();
+    Pelicula(vector<string> datosP);
+    void mostrarDatos();
 };
 
 #endif

@@ -7,15 +7,19 @@
 #define VIDEO_H
 
 #include <string>
+#include <vector>
 using namespace std;
 
 class Video{
     protected:
-    int ID, calificacion;
-    string nombre, genero, estreno;
-    double duracion;
+    vector<string> datos; 
 
     public:
+        Video();
+        Video(vector<string> datos);
+        bool filtrarCalif(double calif);
+        bool filtrarGen(string genero);
+        virtual void mostrarDatos() = 0;
 
 };
 #endif

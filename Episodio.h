@@ -7,13 +7,18 @@
 #define EPISODIO_H
 
 #include "Video.h"
+#include <vector>
 
 class Episodio: public Video{
     private:
-    int temporada, numeroEpisodio;
+    vector<string> datosE;
 
     public:
-
+    Episodio();
+    Episodio(vector<string> datosE);
+    bool esSerie(string serie);
+    void mostrarDatos();
+    
 };
 
 #endif
