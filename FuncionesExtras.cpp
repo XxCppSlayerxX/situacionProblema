@@ -24,7 +24,6 @@ vector<Video*> LeerArchivo() {
     entrada.open("DatosPeliculas.csv");
 
     string linea;
-    int cont = 1;
     bool primera = true;
 
     while (getline(entrada, linea)){
@@ -84,7 +83,7 @@ double verificar(){
         } else if (calif >= 0.0 && calif <= 10.0) {
             break;
         } else {
-            cout << "El valor debe estar entre 0 y 10. Intente nuevamente." << endl;
+            cout << "El valor debe estar entre 0 y 10. Intente nuevamente." << endl << endl;
         }
     }
     return calif;

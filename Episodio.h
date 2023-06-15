@@ -18,7 +18,11 @@ class Episodio: public Video{
     Episodio(vector<string> datosE);
     bool esSerie(string serie);
     void mostrarDatos();
-    
+    string getNombreE() const;
+    string getTemporada() const;
+    string getNEpisodio() const;
+    friend ostream& operator<<(ostream& output, const Episodio* pelicula);
+    void imprimir(ostream& output) const override;
 };
 
 #endif

@@ -14,8 +14,10 @@ using namespace std;
 int main(){
     string opc = "0";
     string subopc = "0";
-    string genero; 
+    string genero, serieOPelicula; 
     double calif = 0;
+    
+    //Vector de apuntadores a objetos de tipo "Video"
     vector<Video*> videos;
 
     while(opc != "7"){
@@ -66,16 +68,15 @@ int main(){
     }
 
         }else if (opc == "3"){
-            string serie;
             cout << "Tecleé el nombre de su serie (cada palabra empezando con mayuscula, por ejemplo 'Game Of Thrones'): ";
             cin.ignore();
-            getline (cin, serie);
+            getline (cin, serieOPelicula);
 
              for(int i = 0; i < videos.size(); i++){
                 Video* video = dynamic_cast<Video*>(videos[i]);
                 if(Episodio* episodio = dynamic_cast<Episodio*>(video)){
-                    if(episodio->esSerie(serie)){
-                        episodio->mostrarDatos();
+                    if(episodio->esSerie(serieOPelicula)){
+                        cout << episodio;
                     }
                 }
             }
@@ -86,14 +87,48 @@ int main(){
                 Video* video = dynamic_cast<Video*>(videos[i]);
                 if(Pelicula* peli = dynamic_cast<Pelicula*>(video)){
                     if(peli->filtrarCalif(calif)){
-                        peli->mostrarDatos();
+                        cout << peli;
                     }
                 }
             }
 
         }else if (opc == "5"){  
+            cout << "Tecleé el nombre del capitulo de la serie o película que quiera calificar(cada palabra empezando con mayuscula, por ejemplo 'Jurassic Park'): ";
+            cin.ignore();
+            getline (cin, serieOPelicula);
+            calif = verificar();
+            double& ref = calif;
+
+            for (size_t i = 0; i < videos.size(); i++){
+                Episodio* episodio = dynamic_cast<Episodio*>(videos[i]);
+                Pelicula* pelicula = dynamic_cast<Pelicula*>(videos[i]);
+
+                if (episodio && episodio->getNombreE() == serieOPelicula) {
+                    episodio->setCalif(to_string(ref));
+                    videos[i] = episodio;    
+                    break;
+                } else if (pelicula && pelicula->getNombre() == serieOPelicula) {
+                    pelicula->setCalif(to_string(ref));
+                    videos[i] = pelicula;    
+                    break;
+                }
+            }
             
         }else if (opc == "6"){
+            cout << "Tecleé el nombre de la serie de la cual quiera obtener el promedio: ";
+            cin.ignore();
+            getline (cin, serieOPelicula);
+            double acumulador, numeroE, res;
+            for (size_t i = 0; i < videos.size(); i++){
+                Episodio* episodio = dynamic_cast<Episodio*>(videos[i]);
+
+                if (episodio && episodio->getNombre() == serieOPelicula){
+                    acumulador = acumulador + stod(episodio->getCalif());
+                    numeroE++;
+                }
+            }
+            res = acumulador/numeroE;
+            cout << "El promedio es: " << res << "/10 " << endl;
 
         }else if (opc == "7"){
             cout << "Gracias." << endl;
