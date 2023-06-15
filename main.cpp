@@ -1,7 +1,7 @@
 /**
-* Autor: Jesus Guzman Ortega
-*archivo main
-*/
+ * Autor: Jesus Guzman Ortega
+ * Archivo main
+ */
 
 #include "Video.h"
 #include "Pelicula.h"
@@ -12,22 +12,23 @@
 using namespace std;
 
 int main(){
-    string opc = "0";
-    string subopc = "0";
-    string genero, serieOPelicula; 
-    double calif = 0;
+    string opc = "0"; // Opción del menú principal
+    string subopc = "0"; // Opción del submenú
+    string genero, serieOPelicula; // Variables auxiliares
+    double calif = 0; // Variable para almacenar la calificación
     
-    //Vector de apuntadores a objetos de tipo "Video"
+    // Vector de apuntadores a objetos de tipo "Video"
     vector<Video*> videos;
 
     while(opc != "7"){
-        menu();
+        menu(); // Mostrar el menú principal
         cin >> opc;
-        if (opc == "1"){
-            videos = LeerArchivo();
 
-        }else if(opc == "2"){
-            cout << "Tecleé la opción que desee." << endl;
+        if (opc == "1"){
+            videos = LeerArchivo(); // Leer los datos de archivo y almacenarlos en el vector
+
+        } else if(opc == "2"){
+            cout << "Teclee la opción que desee." << endl;
             cout << "1.- Calificación." << endl;
             cout << "2.- Género." << endl;
             cout << "3.- Calificación y género" << endl;
@@ -36,66 +37,84 @@ int main(){
                 cin >> subopc;
                 if(subopc == "1"){
                     calif = verificar();
-                    for(int i = 0; i < videos.size();i++){
+                    for(int i = 0; i < videos.size(); i++){
                         if(videos[i]->filtrarCalif(calif)){
-                            videos[i]->mostrarDatos();
+                            videos[i]->mostrarDatos(); // Mostrar datos que cumplan con la calificación especificada
                         }
                     }
                     break;
-                }else if(subopc == "2"){
+                } else if(subopc == "2"){
                     genero = generos();
-    
                     for(int i = 0; i < videos.size(); i++){
                         if(videos[i]->filtrarGen(genero)){
-                            videos[i]->mostrarDatos();
+                            videos[i]->mostrarDatos(); // Mostrar datos que cumplan con el género especificado
                         }
                     }
                     break;
-                }else if(subopc == "3"){
+                } else if(subopc == "3"){
                     calif = verificar();
                     genero = generos();
-
                     for(int i = 0; i < videos.size(); i++){
                         if(videos[i]->filtrarGen(genero) && videos[i]->filtrarCalif(calif)){
-                            videos[i]->mostrarDatos();
+                            videos[i]->mostrarDatos(); // Mostrar datos que cumplan con la calificación y género especificados
                         }
                     }
                     break;
-                }else{
-                    cout << "Introduzca opción válida" << endl;
+                } else {
+                    cout << "Introduzca una opción válida" << endl;
                     continue;
                 }
-    }
+            }
 
-        }else if (opc == "3"){
-            cout << "Tecleé el nombre de su serie (cada palabra empezando con mayuscula, por ejemplo 'Game Of Thrones'): ";
-            cin.ignore();
-            getline (cin, serieOPelicula);
+        } else if (opc == "3"){
+            vector<string> pelisYseries;
 
-             for(int i = 0; i < videos.size(); i++){
+            for(int i = 0; i < videos.size(); i++){
+                Episodio* episodio = dynamic_cast<Episodio*>(videos[i]);
+                Pelicula* pelicula = dynamic_cast<Pelicula*>(videos[i]);
+
+                if (episodio) {
+                    pelisYseries.push_back(convertirAMinusculas(episodio->getNombre()));   
+                }
+            }  
+
+            serieOPelicula = verificarP(pelisYseries);
+
+            for(int i = 0; i < videos.size(); i++){
                 Video* video = dynamic_cast<Video*>(videos[i]);
                 if(Episodio* episodio = dynamic_cast<Episodio*>(video)){
                     if(episodio->esSerie(serieOPelicula)){
-                        cout << episodio;
+                        cout << episodio; // Mostrar datos de episodios pertenecientes a la serie especificada
                     }
                 }
             }
 
-        }else if (opc == "4"){
+        } else if (opc == "4"){
             calif = verificar();
             for(int i = 0; i < videos.size(); i++){
                 Video* video = dynamic_cast<Video*>(videos[i]);
                 if(Pelicula* peli = dynamic_cast<Pelicula*>(video)){
                     if(peli->filtrarCalif(calif)){
-                        cout << peli;
+                        cout << peli; // Mostrar datos de películas que cumplan con la calificación especificada
                     }
                 }
             }
 
-        }else if (opc == "5"){  
-            cout << "Tecleé el nombre del capitulo de la serie o película que quiera calificar(cada palabra empezando con mayuscula, por ejemplo 'Jurassic Park'): ";
-            cin.ignore();
-            getline (cin, serieOPelicula);
+        } else if (opc == "5"){
+            vector<string> pelisYseries;
+
+            for(int i = 0; i < videos.size(); i++){
+                Episodio* episodio = dynamic_cast<Episodio*>(videos[i]);
+                Pelicula* pelicula = dynamic_cast<Pelicula*>(videos[i]);
+
+                if (episodio) {
+                    pelisYseries.push_back(convertirAMinusculas(episodio->getNombreE()));
+                } else if (pelicula) {
+                    pelisYseries.push_back(convertirAMinusculas(pelicula->getNombre()));   
+                }
+            }  
+
+            serieOPelicula = verificarP(pelisYseries);
             calif = verificar();
             double& ref = calif;
 
@@ -104,20 +123,29 @@ int main(){
                 Pelicula* pelicula = dynamic_cast<Pelicula*>(videos[i]);
 
                 if (episodio && episodio->getNombreE() == serieOPelicula) {
-                    episodio->setCalif(to_string(ref));
+                    episodio->setCalif(to_string(ref)); // Actualizar la calificación del episodio
                     videos[i] = episodio;    
                     break;
                 } else if (pelicula && pelicula->getNombre() == serieOPelicula) {
-                    pelicula->setCalif(to_string(ref));
+                    pelicula->setCalif(to_string(ref)); // Actualizar la calificación de la película
                     videos[i] = pelicula;    
                     break;
                 }
             }
             
-        }else if (opc == "6"){
-            cout << "Tecleé el nombre de la serie de la cual quiera obtener el promedio: ";
-            cin.ignore();
-            getline (cin, serieOPelicula);
+        } else if (opc == "6"){
+            vector<string> pelisYseries;
+
+            for(int i = 0; i < videos.size(); i++){
+                Episodio* episodio = dynamic_cast<Episodio*>(videos[i]);
+                Pelicula* pelicula = dynamic_cast<Pelicula*>(videos[i]);
+
+                if (episodio) {
+                    pelisYseries.push_back(convertirAMinusculas(episodio->getNombre()));   
+                }
+            }  
+
+            serieOPelicula = verificarP(pelisYseries);
             double acumulador, numeroE, res;
             for (size_t i = 0; i < videos.size(); i++){
                 Episodio* episodio = dynamic_cast<Episodio*>(videos[i]);
@@ -127,11 +155,11 @@ int main(){
                     numeroE++;
                 }
             }
-            res = acumulador/numeroE;
-            cout << "El promedio es: " << res << "/10 " << endl;
+            res = acumulador/numeroE; //Dividimos el total de la  suma de cantidad de episodios / el numero de episodios.
+            cout << "El promedio es: " << res << "/10 " << endl << endl;
 
-        }else if (opc == "7"){
-            cout << "Gracias." << endl;
+        } else if (opc == "7"){
+            cout << "Gracias." << endl; //Salimos del Programa
         }    
     }
     return 0;

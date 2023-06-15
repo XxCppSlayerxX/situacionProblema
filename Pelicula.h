@@ -1,6 +1,6 @@
 /**
 * Autor: Jesus Guzman Ortega
-*Definir Clase pelicula
+* Definir Clase Pelicula
 */
 
 #include "Video.h"
@@ -15,12 +15,10 @@ class Pelicula: public Video{
     vector<string> datosP;
 
     public:
-    Pelicula();
-    Pelicula(vector<string> datosP);
-    void mostrarDatos();   
-    friend ostream& operator<<(ostream& output, const Pelicula* pelicula);
-    void imprimir(ostream& output) const override;
-
+    Pelicula(); // Constructor por defecto
+    Pelicula(vector<string> datosP); // Constructor con parámetros
+    void mostrarDatos(); // Método para mostrar los datos de la película   
+    friend ostream& operator<<(ostream& output, const Pelicula* pelicula); // Sobrecarga del operador de inserción <<
 };
 
 #endif
