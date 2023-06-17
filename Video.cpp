@@ -40,6 +40,7 @@ bool Video::filtrarGen(string genero){
 void Video::setCalif(const string& calif){
     // Establece la calificación del video
     datos[4] = calif;
+    cout << "Calificación guardada exitosamente." << endl << endl;
 }
 
 string Video::getNombre() const{

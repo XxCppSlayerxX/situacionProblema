@@ -16,6 +16,7 @@ int main(){
     string subopc = "0"; // Opción del submenú
     string genero, serieOPelicula; // Variables auxiliares
     double calif = 0; // Variable para almacenar la calificación
+    int cont = 0; // Contador para verificar la carga del archivo
     
     // Vector de apuntadores a objetos de tipo "Video"
     vector<Video*> videos;
@@ -23,9 +24,26 @@ int main(){
     while(opc != "7"){
         menu(); // Mostrar el menú principal
         cin >> opc;
+        if(opc == "1"){
+            cont++;
+        } 
+
+        if(cont == 0 && cont != 7){
+            cout << endl << "ERROR DE CARGA" << endl << "NO HA CARGADO NINGUNA BASE DE DATOS" << endl << endl;
+            videos = LeerArchivo();
+            cont++;
+            continue;
+        }  
 
         if (opc == "1"){
-            videos = LeerArchivo(); // Leer los datos de archivo y almacenarlos en el vector
+            videos = LeerArchivo();
+            cont++;
+            if(videos.size() == 0){
+                cout << "error, no puedo leer el archivo..." << endl;
+                return -1;
+            }else{
+                cout << "Archivo cargado" << endl;
+            } // Leer los datos de archivo y almacenarlos en el vector
 
         } else if(opc == "2"){
             cout << "Teclee la opción que desee." << endl;
@@ -159,7 +177,17 @@ int main(){
             cout << "El promedio es: " << res << "/10 " << endl << endl;
 
         } else if (opc == "7"){
+            for (Video* video : videos) {
+                delete video;
+            }
+            videos.clear();
             cout << "Gracias." << endl; //Salimos del Programa
+        }
+
+        if(cont == 0){
+            cout << endl << "ERROR DE CARGA" << endl << "NO HA CARGADO NINGUNA BASE DE DATOS" << endl << endl;
+            videos = LeerArchivo();
+            cont++;
         }    
     }
     return 0;

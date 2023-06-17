@@ -27,8 +27,9 @@ vector<Video*> LeerArchivo() {
     vector<Video*> videos;
 
     ifstream entrada;
-    entrada.open("DatosPeliculas.csv");
 
+    entrada.open("DatosPeliculas.csv");
+    
     string linea;
     bool primera = true;
 
@@ -40,6 +41,7 @@ vector<Video*> LeerArchivo() {
 
         if(datos.size() == 6){
             videos.push_back(new Pelicula(datos));
+            
         }else{
             videos.push_back(new Episodio(datos));
         }
@@ -66,13 +68,12 @@ vector<string> separar(string linea){
 // Función para mostrar el menú principal
 void menu(){
     cout << "Menu principal, por favor tecleé el número de alguna opción: \n" << endl;
-    cout << "NO OLVIDE CARGAR EL ARCHIVO DE DATOS,PRESIONANDO 1" << endl << endl;;
 
     cout << "1.- Cargar el archivo de datos." << endl;
     cout << "2.- Filtrar películas o series por calificación o género."<< endl;
     cout << "3.- Ver lista de episodios de una serie." << endl;    
     cout << "4.- Filtrar películas por calificación." << endl;
-    cout << "5.- Calificar película o serie." << endl;
+    cout << "5.- Calificar película o episodio de serie." << endl;
     cout << "6.- Promedio de calificación de serie." << endl;
     cout << "7.- Salir." << endl << endl;
 }
